@@ -40,7 +40,7 @@ namespace MatchMaker.Worker
 
                     var req = JsonSerializer.Deserialize<Contracts.MatchRequestDto>(cr.Message.Value, _jsonOptions)!;
                     var userId = new UserId(req.UserId);
-                    var match = await _matchService.HandleSearchAsync(userId, stoppingToken);
+                    var match = _matchService.HandleSearch(userId);
 
                     if (match is not null)
                     {
@@ -49,6 +49,10 @@ namespace MatchMaker.Worker
                             match.Users.Select(u => u.Value).ToArray());
 
                         var payload = JsonSerializer.Serialize(complete, _jsonOptions);
+
+                        _logger.LogInformation(
+                             "Payload for match-complete {payload}",
+                             payload);
 
                         await _producer.ProduceAsync(
                             KafkaEndpoints.CompleteTopic,

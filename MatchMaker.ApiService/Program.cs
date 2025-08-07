@@ -2,10 +2,12 @@ using Confluent.Kafka;
 using Infrastructure.Algorithms;
 using Infrastructure.Kafka;
 using Infrastructure.Redis;
+using MatchMaker.ApiService;
 using MatchMaker.ApiService.DTOs;
 using MatchMaker.Core.Application;
 using MatchMaker.Core.Domain.Entities;
 using MatchMaker.Core.Domain.Interfaces;
+using Microsoft.AspNetCore.DataProtection.KeyManagement;
 using StackExchange.Redis;
 using System.Text.Json;
 
@@ -30,13 +32,19 @@ builder.AddRedisClient("redis");
 // Infrastructure: Redis repository
 builder.Services.AddSingleton<IMatchRepository, RedisMatchRepository>();
 
+//builder.Services.AddSingleton<IKafkaProducer, KafkaProducer>();
+
 // Kafka producer
-builder.Services.AddSingleton<ProducerConfig>(sp => new ProducerConfig
+builder.AddKafkaConsumer<string, string>("kafka", opt =>
 {
-    BootstrapServers = sp.GetRequiredService<IConfiguration>()
-                             .GetConnectionString("kafka")
+    opt.Config.GroupId = "matchmaking-service";
+    opt.Config.AutoOffsetReset = AutoOffsetReset.Earliest;
+    opt.Config.AllowAutoCreateTopics = true;
 });
-builder.Services.AddSingleton<IKafkaProducer, KafkaProducer>();
+builder.AddKafkaProducer<string, string>("kafka");
+
+builder.Services.AddHostedService<MatchCompletionListener>();
+
 
 var app = builder.Build();
 
@@ -48,23 +56,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-string[] summaries = ["Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"];
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
-
-app.MapPost("/matchmaking/search", async (SearchRequestDto dto, IKafkaProducer producer) =>
+app.MapPost("/matchmaking/search", async (SearchRequestDto dto, IProducer<string, string> producer) =>
 {
     // Build Kafka message
     Console.WriteLine("POST /matchmaking/search");
@@ -73,11 +65,8 @@ app.MapPost("/matchmaking/search", async (SearchRequestDto dto, IKafkaProducer p
     var payload = JsonSerializer.Serialize(request);
 
     Console.WriteLine($"{dto.UserId} {payload}");
-
     await producer.ProduceAsync(
-        topic: KafkaEndpoints.SearchTopic,
-        key: dto.UserId,
-        value: payload);
+        topic: KafkaEndpoints.SearchTopic, new Message<string, string> { Key = dto.UserId, Value = payload });
 
     Console.WriteLine("Message was produced to SearchTopic");
 
@@ -110,8 +99,3 @@ app.MapGet("/matchmaking/match", async (string userId, IMatchRepository matchRep
 app.MapDefaultEndpoints();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

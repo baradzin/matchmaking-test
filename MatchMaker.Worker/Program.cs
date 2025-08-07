@@ -1,7 +1,6 @@
 ﻿using Confluent.Kafka;
 using Infrastructure.Algorithms;
 using Infrastructure.Kafka;
-using Infrastructure.Redis;
 using MatchMaker.Core.Application;
 using MatchMaker.Core.Domain.Interfaces;
 using MatchMaker.Worker;
@@ -25,14 +24,12 @@ builder.AddKafkaConsumer<string, string>("kafka", opt =>
     opt.Config.AllowAutoCreateTopics = true;
 });
 
-// Redis
-//var redisConn = builder.Configuration.GetConnectionString("redis");
-//builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
-//    ConnectionMultiplexer.Connect(redisConn!));
+//// Redis
+////var redisConn = builder.Configuration.GetConnectionString("redis");
+////builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+////    ConnectionMultiplexer.Connect(redisConn!));
 
-builder.AddRedisClient("redis");
-
-// Доменные сервисы
+//builder.AddRedisClient("redis");
 builder.Services.AddSingleton<IMatchService, MatchService>();
 
 builder.Services.AddSingleton<IMatchAlgorithm>(sp =>
@@ -40,8 +37,6 @@ builder.Services.AddSingleton<IMatchAlgorithm>(sp =>
     var logger = sp.GetRequiredService<ILogger<RoundRobinAlgorithm>>();
     return new RoundRobinAlgorithm(logger, usersPerMatch: 3);
 });
-
-builder.Services.AddSingleton<IMatchRepository, RedisMatchRepository>();
 
 // Ваш фоновой engine
 builder.Services.AddHostedService<MatchmakingEngine>();

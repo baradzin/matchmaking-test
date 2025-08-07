@@ -8,8 +8,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchMaker.ServiceDefaults"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchMaker.ApiService", "MatchMaker.ApiService\MatchMaker.ApiService.csproj", "{75B32487-CF9A-4B11-BA3A-0334A17EB90E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchMaker.Web", "MatchMaker.Web\MatchMaker.Web.csproj", "{107DAE06-701B-44C9-A565-059E6007C5E9}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MatchMaker.KafkaInitializer", "MatchMaker.KafkaInitializer\MatchMaker.KafkaInitializer.csproj", "{877E23CB-7D61-4E98-A74D-47F068453101}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Contracts", "Contracts", "{E1BBB0CD-425D-4F68-AD32-AFBCDD27F381}"
@@ -50,10 +48,6 @@ Global
 		{75B32487-CF9A-4B11-BA3A-0334A17EB90E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75B32487-CF9A-4B11-BA3A-0334A17EB90E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75B32487-CF9A-4B11-BA3A-0334A17EB90E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{107DAE06-701B-44C9-A565-059E6007C5E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{107DAE06-701B-44C9-A565-059E6007C5E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{107DAE06-701B-44C9-A565-059E6007C5E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{107DAE06-701B-44C9-A565-059E6007C5E9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{877E23CB-7D61-4E98-A74D-47F068453101}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{877E23CB-7D61-4E98-A74D-47F068453101}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{877E23CB-7D61-4E98-A74D-47F068453101}.Release|Any CPU.ActiveCfg = Release|Any CPU

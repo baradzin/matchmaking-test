@@ -14,7 +14,6 @@
     <ProjectReference Include="..\Domain\MatchMaker.Core.Domain.csproj" />
     <ProjectReference Include="..\MatchMaker.ApiService\MatchMaker.ApiService.csproj" />
     <ProjectReference Include="..\MatchMaker.KafkaInitializer\MatchMaker.KafkaInitializer.csproj" />
-    <ProjectReference Include="..\MatchMaker.Web\MatchMaker.Web.csproj" />
     <ProjectReference Include="..\MatchMaker.Worker\MatchMaker.Worker.csproj" />
   </ItemGroup>
 

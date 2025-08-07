@@ -37,7 +37,7 @@ namespace Infrastructure.Algorithms
                 return false;
             }
 
-            completed = new Match(new MatchId(Guid.NewGuid()), _pool.AsReadOnly(), DateTimeOffset.UtcNow);
+            completed = new Match(new MatchId(Guid.NewGuid()), _pool.ToList().AsReadOnly(), DateTimeOffset.UtcNow);
 
             _logger.LogInformation("Match {MatchId} completed with users: {Users}",
                completed.Id, string.Join(", ", completed.Users.Select(u => u.Value)));

@@ -1,9 +1,4 @@
 ﻿using MatchMaker.Core.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MatchMaker.Core.Application
 {
@@ -12,11 +7,11 @@ namespace MatchMaker.Core.Application
         /// <summary>
         /// Processes a matchmaking search request. Returns a Match if formed, or null if buffered.
         /// </summary>
-        Task<Match?> HandleSearchAsync(UserId userId, CancellationToken cancellationToken = default);
+        Match? HandleSearch(UserId userId);
 
         /// <summary>
         /// Retrieves the last match for the given user.
         /// </summary>
-        Task<Match?> GetMatchForUserAsync(UserId userId, CancellationToken cancellationToken = default);
+        //Task<Match?> GetMatchForUserAsync(UserId userId, CancellationToken cancellationToken = default);
     }
 }

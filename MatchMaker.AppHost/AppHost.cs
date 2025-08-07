@@ -1,0 +1,43 @@
+using Aspire.Hosting;
+using Aspire.Hosting.Redis;
+using Aspire.Confluent.Kafka;
+using System.Collections.Immutable;
+var builder = DistributedApplication.CreateBuilder(args);
+
+var kafka = builder.AddKafka("kafka");
+var redis = builder.AddRedis("redis");
+
+var kafkaInit = builder.AddProject<Projects.MatchMaker_KafkaInitializer>("kafka-init")
+    .WithReference(kafka)
+    .WaitFor(kafka)
+    .ExcludeFromManifest()
+    .WithInitialState(new CustomResourceSnapshot
+    {
+        ResourceType = "kafka-init",
+        IsHidden = true,
+        CreationTimeStamp = DateTime.UtcNow,
+        State = KnownResourceStates.NotStarted,
+        Properties = ImmutableArray<ResourcePropertySnapshot>.Empty
+    });
+
+var apiService = builder.AddProject<Projects.MatchMaker_ApiService>("apiservice")
+    .WithHttpHealthCheck("/health")
+    .WaitForCompletion(kafkaInit)
+    .WithReference(kafka)
+    .WithReference(redis);
+
+var worker = builder.AddProject<Projects.MatchMaker_Worker>("worker")
+    .WithReference(apiService)
+    .WaitFor(apiService)
+    .WithReference(kafka)
+    .WithReference(redis);
+
+builder.AddProject<Projects.MatchMaker_Web>("webfrontend")
+    .WithExternalHttpEndpoints()
+    .WithHttpHealthCheck("/health")
+    .WithReference(redis)
+    .WaitFor(redis)
+    .WithReference(apiService)
+    .WaitFor(apiService);
+
+builder.Build().Run();

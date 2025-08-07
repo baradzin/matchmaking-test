@@ -4,13 +4,15 @@ using Aspire.Confluent.Kafka;
 using System.Collections.Immutable;
 var builder = DistributedApplication.CreateBuilder(args);
 
+builder.AddDockerComposeEnvironment("env");
+
 var kafka = builder.AddKafka("kafka");
 var redis = builder.AddRedis("redis");
 
 var kafkaInit = builder.AddProject<Projects.MatchMaker_KafkaInitializer>("kafka-init")
     .WithReference(kafka)
     .WaitFor(kafka)
-    .ExcludeFromManifest()
+    //.ExcludeFromManifest()
     .WithInitialState(new CustomResourceSnapshot
     {
         ResourceType = "kafka-init",

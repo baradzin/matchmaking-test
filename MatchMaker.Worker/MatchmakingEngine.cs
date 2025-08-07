@@ -50,10 +50,6 @@ namespace MatchMaker.Worker
 
                         var payload = JsonSerializer.Serialize(complete, _jsonOptions);
 
-                        _logger.LogInformation(
-                             "Payload for match-complete {payload}",
-                             payload);
-
                         await _producer.ProduceAsync(
                             KafkaEndpoints.CompleteTopic,
                             new Message<string, string>
@@ -74,7 +70,7 @@ namespace MatchMaker.Worker
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogError(ex.Message);
+                    _logger.LogError(message: ex.Message);
                 }
             }
         }

@@ -17,16 +17,18 @@ var kafkaInit = builder.AddProject<Projects.MatchMaker_KafkaInitializer>("kafka-
         IsHidden = true,
         CreationTimeStamp = DateTime.UtcNow,
         State = KnownResourceStates.NotStarted,
-        Properties = ImmutableArray<ResourcePropertySnapshot>.Empty
+        Properties = []
     });
 
-var apiService = builder.AddProject<Projects.MatchMaker_ApiService>("apiservice")
+var apiService = builder.AddProject<Projects.MatchMaker_ApiService>("service")
     .WithHttpHealthCheck("/health")
     .WaitForCompletion(kafkaInit)
     .WithReference(kafka)
-    .WithReference(redis);
+    .WithReference(redis)
+    .WaitFor(redis);
 
-var worker = builder.AddProject<Projects.MatchMaker_Worker>("worker")
+builder.AddProject<Projects.MatchMaker_Worker>("worker")
+    .WithReplicas(2)
     .WithReference(apiService)
     .WaitFor(apiService)
     .WithReference(kafka);

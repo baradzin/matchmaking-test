@@ -21,11 +21,11 @@ using var adminClient = new AdminClientBuilder(adminConfig).Build();
 
 try
 {
-    adminClient.CreateTopicsAsync(new[]
-    {
+    adminClient.CreateTopicsAsync(
+    [
         new TopicSpecification { Name = "matchmaking.request", NumPartitions = 1, ReplicationFactor = 1 },
         new TopicSpecification { Name = "matchmaking.complete", NumPartitions = 1, ReplicationFactor = 1 },
-    }).Wait();
+    ]).Wait();
 
     logger.LogInformation("Kafka topics created successfully.");
 }

@@ -17,7 +17,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Infrastructure.Algorithms\Infrastructure.Algorithms.csproj" />
     <ProjectReference Include="..\Infrastructure.Kafka\Infrastructure.Kafka.csproj" />
-    <ProjectReference Include="..\Infrastructure.Redis\Infrastructure.Redis.csproj" />
     <ProjectReference Include="..\MatchMaker.Core.Application\MatchMaker.Core.Application.csproj" />
     <ProjectReference Include="..\MatchMaker.ServiceDefaults\MatchMaker.ServiceDefaults.csproj" />
   </ItemGroup>

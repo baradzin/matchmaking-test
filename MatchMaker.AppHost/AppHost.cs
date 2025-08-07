@@ -29,15 +29,6 @@ var apiService = builder.AddProject<Projects.MatchMaker_ApiService>("apiservice"
 var worker = builder.AddProject<Projects.MatchMaker_Worker>("worker")
     .WithReference(apiService)
     .WaitFor(apiService)
-    .WithReference(kafka)
-    .WithReference(redis);
-
-builder.AddProject<Projects.MatchMaker_Web>("webfrontend")
-    .WithExternalHttpEndpoints()
-    .WithHttpHealthCheck("/health")
-    .WithReference(redis)
-    .WaitFor(redis)
-    .WithReference(apiService)
-    .WaitFor(apiService);
+    .WithReference(kafka);
 
 builder.Build().Run();

@@ -1,0 +1,82 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userprefs
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Rider
+.idea/
+
+# Resharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# DotCover
+*.dotCover
+
+# NCrunch
+*.ncrunch*
+.*crunch*
+
+# Build and project files
+*.csproj.user
+*.sln.docstates
+
+# NuGet
+*.nupkg
+.nuget/packages/
+
+# ASP.NET
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# VS Code
+.vscode/
+
+# IIS Express
+/.vs/
+/IISExpress/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Mono Auto Generated Files
+mono_crash.*
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# IIS:
+App_Data/*
+# Не игнорировать эти файлы, если нужны шаблоны БД и пр.
+!App_Data/*.mdf
+!App_Data/*.ldf
+
+# JetBrains Rider
+.idea/
+
+# Выходные файлы тестов
+TestResults/

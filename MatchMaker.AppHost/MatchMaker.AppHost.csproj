@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <Sdk Name="Aspire.AppHost.Sdk" Version="9.4.0" />
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <UserSecretsId>6a149349-4d17-4be4-90a7-72de2315b2d1</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\MatchMaker.Core.Domain.csproj" />
+    <ProjectReference Include="..\MatchMaker.ApiService\MatchMaker.ApiService.csproj" />
+    <ProjectReference Include="..\MatchMaker.KafkaInitializer\MatchMaker.KafkaInitializer.csproj" />
+    <ProjectReference Include="..\MatchMaker.Web\MatchMaker.Web.csproj" />
+    <ProjectReference Include="..\MatchMaker.Worker\MatchMaker.Worker.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Confluent.Kafka" Version="9.4.0" />
+    <PackageReference Include="Aspire.Hosting.AppHost" Version="9.4.0" />
+    <PackageReference Include="Aspire.Hosting.Kafka" Version="9.4.0" />
+    <PackageReference Include="Aspire.Hosting.Redis" Version="9.4.0" />
+  </ItemGroup>
+
+</Project>

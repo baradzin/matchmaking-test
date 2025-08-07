@@ -11,8 +11,6 @@ using StackExchange.Redis;
 var builder = Host.CreateApplicationBuilder(args);
 
 builder.Logging.AddConsole();
-
-// (опционально) подтянуть все стандартные логи / конфиг / health defaults
 builder.AddServiceDefaults();
 
 // Kafka Producer / Consumer
@@ -24,12 +22,6 @@ builder.AddKafkaConsumer<string, string>("kafka", opt =>
     opt.Config.AllowAutoCreateTopics = true;
 });
 
-//// Redis
-////var redisConn = builder.Configuration.GetConnectionString("redis");
-////builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
-////    ConnectionMultiplexer.Connect(redisConn!));
-
-//builder.AddRedisClient("redis");
 builder.Services.AddSingleton<IMatchService, MatchService>();
 
 builder.Services.AddSingleton<IMatchAlgorithm>(sp =>

@@ -22,10 +22,7 @@ namespace Infrastructure.Algorithms
 
         public bool TryAddUser(UserId user, [NotNullWhen(true)] out Match? completed)
         {
-            if (user == null)
-            {
-                throw new ArgumentNullException(nameof(user));
-            }
+            ArgumentNullException.ThrowIfNull(user);
 
             _pool.Add(user);
 

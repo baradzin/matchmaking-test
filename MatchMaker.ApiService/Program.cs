@@ -23,16 +23,10 @@ builder.Services.AddProblemDetails();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
-//var redisConn = builder.Configuration.GetConnectionString("redis");
-//builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
-//    ConnectionMultiplexer.Connect(redisConn!));
-
 builder.AddRedisClient("redis");
 
 // Infrastructure: Redis repository
 builder.Services.AddSingleton<IMatchRepository, RedisMatchRepository>();
-
-//builder.Services.AddSingleton<IKafkaProducer, KafkaProducer>();
 
 // Kafka producer
 builder.AddKafkaConsumer<string, string>("kafka", opt =>
@@ -76,14 +70,13 @@ app.MapPost("/matchmaking/search", async (SearchRequestDto dto, IProducer<string
 
 app.MapGet("/matchmaking/match", async (string userId, IMatchRepository matchRepository) =>
 {
-    var domainUser = new UserId(userId);
-
     Console.WriteLine($"GET /matchmaking/match?userId={userId}");
+
+    var domainUser = new UserId(userId);
     var match = await matchRepository.GetForUserAsync(domainUser);
 
     if (match is null)
     {
-        Console.WriteLine("Match is null");
         return Results.NotFound();
     }
         
